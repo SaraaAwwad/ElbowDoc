@@ -132,7 +132,7 @@ input[type="file"] {
 						<div class="total-achivement">
 							<div class="row" >
 
-								                     <p id="result" style="color: black; font-size:35px; float:left;"></p>
+								<p id="result" style="color: black; font-size:35px; float:left;"></p>
                                 <strong><p id="datares" style="color: red;  font-size:35px; float:left;"></p></strong>
 
 								<div class="col-md-4 col-sm-6">
@@ -183,7 +183,28 @@ input[type="file"] {
 				</div>
 			</div>
 		</section>
-		<!-- End Achivement Area -->
+		<!-- End Achivement Area --
+		<!-- Start studio Area -->
+		<section class="section-gap studio-area" id = "statistics">
+			<div class="overlay overlay-bg"></div>
+			<div class="container" >
+				<div class="row align-items-center">
+					<div class="col-md-4 col-sm-6 text-center">
+						<div class="studio-thumb">
+							<img src="../static/img/file.png" class="img-fluid" alt="">
+						</div>
+					</div>
+					<div class="col-md-8 col-sm-6">
+						<div class="studio-content">
+							<h2 style="font-size:35px;">Statistics</h2>
+							<p id="result_stat" style="color: black; font-size:35px; float:left;"></p>
+							<strong><p id="stat_res" style="color: red;  font-size:35px; float:left;"></p></strong>
+                        </div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- End studio Area -->
 
 		<!--&lt;!&ndash; Start Video Area &ndash;&gt;-->
 		<!--<section class="video-area">-->
@@ -641,16 +662,22 @@ $("#vflipbutton").click(function(e) {
 	   			$.ajax({
 	   				type: "POST",
 	   				url: $SCRIPT_ROOT + "/upload/",
-	   				data: img,
+	   				data: JSON.stringify(img),
+	   				dataType: 'json',
 	   				    success: function(data) {
                         $('#result').text('Predicted Classification:');
-	   					$('#datares').text(data);
+	   					$('#datares').text(data[0]);
+	   					$('#result_stat').text('Probability:');
+                        $('#stat_res').text(data[1]);
                         },
                         error: function(data) {
                           alert("Error");
                         }
 	   			});
 	   		});
+
+
+
 
 
 	</script>
