@@ -3,6 +3,7 @@ import numpy as np
 from numpy import inf
 import pandas as pd
 import os
+import classifiers as cs
 import matplotlib.pyplot as plt
 from skimage import exposure, transform
 from skimage import img_as_ubyte

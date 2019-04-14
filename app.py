@@ -32,8 +32,8 @@ def upload():
     img = np.array([img])
     print(img.shape)
 
-    selectionname = "svmgaborselection.joblib"
-    modelname = "svmgabor.joblib"
+    selectionname = "crossvalidation_models/svm_gabor_selection.joblib"
+    modelname = "crossvalidation_models/svm_gabor.joblib"
 
     loaded_model = joblib.load(selectionname)
     imgnew = loaded_model.transform(img)
