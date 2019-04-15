@@ -7,6 +7,7 @@ from sklearn.externals import joblib
 import base64
 import re
 import model.load as ml
+from shutil import copyfile
 
 __author__ = 'sarahawwad'
 
@@ -14,6 +15,8 @@ app = Flask(__name__)
 
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 
+folders = ["fractures", "osteo", "r_elbow_dislocation"]
+names = ["fracture", "osteoarthritis", "dislocation"]
 
 @app.route("/")
 def index():
@@ -33,33 +36,46 @@ def upload():
     print(img.shape)
 
     selectionname = "svmgaborselection.joblib"
-    modelname = "svmgabor.joblib"
+    modelname = "svmincremental2.joblib"
 
-    loaded_model = joblib.load(selectionname)
-    imgnew = loaded_model.transform(img)
+    # loaded_model = joblib.load(selectionname)
+    # imgnew = loaded_model.transform(img)
 
     loaded_model = joblib.load(modelname)
-    res = loaded_model.predict(imgnew)
+    res = loaded_model.predict(img)
     res = res[0]
-    names = ["fracture","osteoarthritis", "elbow dislocation"]
+    #names = ["fracture","osteoarthritis", "dislocation"]
     print("Result = ", names[res])
     print("classification")
     return names[res]
 
-# @app.route('/upload/<filename>')
-# def send_image(filename):
-#     return send_from_directory("images", filename)
+@app.route("/retrain/", methods=['GET','POST'])
+def retrain():
+    #img = request.form['img']
+    #convertImage(img)
+    choice = request.form['choice']
+    print("choice = ", choice)
+
+    img = cv.imread("output.png")
+    img = ml.preprocess(img)
+    img = ml.gabor(img)
+    img = img.flatten()
+    img = np.array([img])
+
+    y_new = [int(choice)]
+    modelname = "svmincremental2.joblib"
+    loaded_model = joblib.load(modelname)
+    loaded_model.partial_fit(img, y_new)
+    joblib.dump(loaded_model, 'svmincremental3.joblib')
+    print("size fit =", os.path.getsize('svmincremental2.joblib'))
+    print("size fit =", os.path.getsize('svmincremental3.joblib'))
+
+    return "success"
 
 def convertImage(imgData1):
     imgstr = re.search(b'base64,(.*)',imgData1).group(1)
     with open('output.png','wb') as output:
       output.write(base64.b64decode(imgstr))
-
-@app.route('/gallery')
-def get_gallery():
-    image_names = os.listdir('./images')
-    print(image_names)
-    return render_template("gallery.html", image_names=image_names)
 
 
 if __name__ == "__main__":
