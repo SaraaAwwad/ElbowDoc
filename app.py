@@ -1,11 +1,12 @@
 import os
 from uuid import uuid4
-from flask import Flask, render_template, request, send_from_directory
+from flask import Flask, render_template, request, send_from_directory, jsonify
 import cv2 as cv
 import numpy as np
 from sklearn.externals import joblib
 import base64
 import re
+import json
 import model.load as ml
 from shutil import copyfile
 
@@ -35,19 +36,40 @@ def upload():
     img = np.array([img])
     print(img.shape)
 
-    selectionname = "svmgaborselection.joblib"
-    modelname = "svmincremental2.joblib"
 
-    # loaded_model = joblib.load(selectionname)
-    # imgnew = loaded_model.transform(img)
+    # selectionname = "svmgaborselection.joblib"
+    # modelname = "svmincremental2.joblib"
+
+    selectionname = "crossvalidation_models/svm_gabor_selection.joblib"
+    modelname = "crossvalidation_models/svm_gabor.joblib"
+
+    loaded_model = joblib.load(selectionname)
+    imgnew = loaded_model.transform(img)
 
     loaded_model = joblib.load(modelname)
     res = loaded_model.predict(img)
     res = res[0]
+
     #names = ["fracture","osteoarthritis", "dislocation"]
+
+    p = np.array(loaded_model.decision_function(imgnew))  # decision is a voting function
+    prob = np.exp(p) / np.sum(np.exp(p), axis=1)  # softmax after the voting
+    classes = loaded_model.predict(imgnew)
+
+    print("second")
+    _ = [print('Sample={}, Prediction={},\n Votes={} \nP={}, '.format(idx, c, v, s)) for idx, (v, s, c) in
+         enumerate(zip(p, prob, classes))]
+    probability = prob[:, classes]
+
+    percentage = "{:.1f}%".format(probability[0][0] * 100.0)
+    print(percentage)
+    names = ["fracture","osteoarthritis", "elbow dislocation"]
+
     print("Result = ", names[res])
     print("classification")
-    return names[res]
+    variable = [names[res],percentage]
+
+    return jsonify(variable)
 
 @app.route("/retrain/", methods=['GET','POST'])
 def retrain():
