@@ -9,12 +9,15 @@ import re
 import json
 import model.load as ml
 from shutil import copyfile
+from random import *
+import shutil
 
 __author__ = 'sarahawwad'
 
 app = Flask(__name__)
 
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+print("test1")
 
 folders = ["fractures", "osteo", "r_elbow_dislocation"]
 names = ["fracture", "osteoarthritis", "dislocation"]
@@ -26,7 +29,7 @@ def index():
 
 @app.route("/upload/", methods=['GET','POST'])
 def upload():
-
+    print("test")
     imgData = request.get_data()
     convertImage(imgData)
     img = cv.imread("output.png")
@@ -36,21 +39,15 @@ def upload():
     img = np.array([img])
     print(img.shape)
 
-
-    # selectionname = "svmgaborselection.joblib"
-    # modelname = "svmincremental2.joblib"
-
-    selectionname = "crossvalidation_models/svm_gabor_selection.joblib"
-    modelname = "crossvalidation_models/svm_gabor.joblib"
+    selectionname = "svm_gabor_selection.joblib"
+    modelname = "svm_gabor.joblib"
 
     loaded_model = joblib.load(selectionname)
     imgnew = loaded_model.transform(img)
 
     loaded_model = joblib.load(modelname)
-    res = loaded_model.predict(img)
+    res = loaded_model.predict(imgnew)
     res = res[0]
-
-    #names = ["fracture","osteoarthritis", "dislocation"]
 
     p = np.array(loaded_model.decision_function(imgnew))  # decision is a voting function
     prob = np.exp(p) / np.sum(np.exp(p), axis=1)  # softmax after the voting
@@ -64,7 +61,6 @@ def upload():
     percentage = "{:.1f}%".format(probability[0][0] * 100.0)
     print(percentage)
     names = ["fracture","osteoarthritis", "elbow dislocation"]
-
     print("Result = ", names[res])
     print("classification")
     variable = [names[res],percentage]
@@ -78,19 +74,20 @@ def retrain():
     choice = request.form['choice']
     print("choice = ", choice)
 
-    img = cv.imread("output.png")
-    img = ml.preprocess(img)
-    img = ml.gabor(img)
-    img = img.flatten()
-    img = np.array([img])
-
-    y_new = [int(choice)]
-    modelname = "svmincremental2.joblib"
-    loaded_model = joblib.load(modelname)
-    loaded_model.partial_fit(img, y_new)
-    joblib.dump(loaded_model, 'svmincremental3.joblib')
-    print("size fit =", os.path.getsize('svmincremental2.joblib'))
-    print("size fit =", os.path.getsize('svmincremental3.joblib'))
+    # y_new = [int(choice)]
+    # modelname = "sgd.joblib"
+    # loaded_model = joblib.load(modelname)
+    # loaded_model.partial_fit(img, y_new)
+    # joblib.dump(loaded_model, 'sgd2.joblib')
+    # print("size fit =", os.path.getsize('sgd.joblib'))
+    # print("size fit =", os.path.getsize('sgd2.joblib'))
+    #
+    print("test retrain")
+    x = randint(1, 100)
+    dest = "hybrid2/"+ folders[int(choice)] +"/" +str(x) +".png"
+    print("dest = ", dest)
+    shutil.copy2('output.png', dest)  # target filename is /dst/dir/file.ext
+    ml.retrain()
 
     return "success"
 
