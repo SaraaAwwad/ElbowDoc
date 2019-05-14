@@ -3,7 +3,6 @@ import numpy as np
 from numpy import inf
 import pandas as pd
 import os
-import classifiers as cs
 import matplotlib.pyplot as plt
 from skimage import exposure, transform
 from skimage import img_as_ubyte
@@ -21,6 +20,7 @@ from mahotas.features import surf
 from skimage.filters import gaussian
 from skimage.segmentation import active_contour
 import pandas as pd
+import model.classifiers as cs
 
 img_rows = 224
 img_cols = 224
@@ -346,38 +346,12 @@ def loadimages():
 
                     print(imgname)
 
-                    if imgname.find("radio") == -1:
-                        print("doesnt contain radio (from mura)")
-                        img = preprocess(img)
-                    else:
-                        print("contains radio")
-                        img = preprocess2(img)
+                    img = preprocess2(img)
 
-                    # plt.hist(img.ravel(), 256, [0, 256]);
-                    # plt.show()
-                    # cv2.imshow("img", img)
-                    # cv2.waitKey()
-                    # cv2.destroyAllWindows()
-                    #cv2.imwrite(imgname,img)
-                    img = gabor(img)
-                    #img = wave(img)
-                    #img = feature_hog_desc(img)
-                    #img = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB)
-
-                    #temp=[]
-
-                    #arr1 = haralick_features(img)
-                    #temp.extend(arr1)
-
-                    #img = binary_features(img)
-                    #temp.extend(arr2)
-
-                    #arr3 = stat_features(img)
-                    #temp.extend(arr3)
-
-                    #img = np.asarray(temp)
-
-                    #img = feature_surf(img)
+                    # if imgname.find("radio") == -1:
+                    #     img = preprocess(img)
+                    # else:
+                    #     img = preprocess2(img)
 
                     img = img.flatten()
                     imgarr = np.array([img])
@@ -394,35 +368,10 @@ def loadimages():
             lbl +=1
         return xtotal, ytotal
 
-# def main():
-#
-#     img_path="hybrid2/osteo/01694_1.jpg"
-#     img = cv2.imread(img_path)
-#     img = preprocess(img)
-#     img = gabor(img)
-#     img = img.flatten()
-#     img = np.array([img])
-#     print(img.shape)
-#
-#     selectionname="svmgaborselection.joblib"
-#     modelname = "svmgabor.joblib"
-#
-#     loaded_model = joblib.load(selectionname)
-#     imgnew = loaded_model.transform(img)
-#
-#     loaded_model = joblib.load(modelname)
-#     res = loaded_model.predict(imgnew)
-#     print("Result = ", res)
+def retrain():
+    xtotal, ytotal = loadimages()
+    x_train, x_test, y_train, y_test = train_test_split(xtotal, ytotal, test_size=0.3,random_state=42)
 
-    #xtotal, ytotal = loadimages()
-
-    #xtotal = xtotal.astype('float32')
-    #x_test = x_test.astype('float32')
-    #xtotal /= 255
-    #x_test /= 255
-
-    #x_train, x_test, y_train, y_test = train_test_split(xtotal, ytotal, test_size=0.3,random_state=42)
-
-    #concrete_strategy_a = cs.SvmAlg()
-    #context = cs.Context(concrete_strategy_a)
-    #context.context_interface(x_train, y_train, x_test, y_test)
+    concrete_strategy_a = cs.SvmAlg()
+    context = cs.Context(concrete_strategy_a)
+    context.context_interface(x_train, y_train, x_test, y_test)

@@ -1,6 +1,6 @@
 import os
 from uuid import uuid4
-from flask import Flask, render_template, request, send_from_directory, jsonify
+from flask import Flask, render_template, request, send_from_directory, jsonify, redirect, session, abort,url_for
 import cv2 as cv
 import numpy as np
 from sklearn.externals import joblib
@@ -8,22 +8,63 @@ import base64
 import re
 import json
 import model.load as ml
+import MySQLdb
+from shutil import copyfile
+from random import *
+import shutil
 
 __author__ = 'sarahawwad'
 
 app = Flask(__name__)
 
+conn = MySQLdb.connect(host="localhost",user="root",password="",db="elbow")
+
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+print("test1")
+
+folders = ["fractures", "osteo", "r_elbow_dislocation"]
+names = ["fracture", "osteoarthritis", "dislocation"]
 
 
-@app.route("/")
-def index():
+# @app.route("/")
+# def index():
+#     return render_template("login.html")
+
+@app.route('/')
+def login():
+    return render_template("login.html")
+
+@app.route('/check',methods=["GET","POST"])
+def check():
+    username = str(request.form["user"])
+    password = str(request.form["password"])
+    cursor = conn.cursor()
+    cursor1 = conn.cursor()
+    cursor.execute("SELECT username FROM user WHERE username ='"+username+"' AND password ='"+password+"'")
+    cursor1.execute("SELECT type_id_fk FROM user WHERE username ='"+username+"' AND password ='"+password+"'")
+    user = cursor.fetchone()
+    type = cursor1.fetchone()
+
+    # if len(user) is 1:
+    #     return render_template("home.html",data=type[0])
+    # else:
+    #     return "failed"
+
+    if len(user) is 1:
+        if type[0] == 2:
+            return render_template("upload.html")
+        else:
+            return render_template("doctor.html")
+    else:
+        return "failed"
+
+@app.route("/classify", methods=['GET','POST'])
+def classify():
     return render_template("upload.html")
-
 
 @app.route("/upload/", methods=['GET','POST'])
 def upload():
-
+    print("test")
     imgData = request.get_data()
     convertImage(imgData)
     img = cv.imread("output.png")
@@ -33,8 +74,8 @@ def upload():
     img = np.array([img])
     print(img.shape)
 
-    selectionname = "crossvalidation_models/svm_gabor_selection.joblib"
-    modelname = "crossvalidation_models/svm_gabor.joblib"
+    selectionname = "svm_gabor_selection.joblib"
+    modelname = "svm_gabor.joblib"
 
     loaded_model = joblib.load(selectionname)
     imgnew = loaded_model.transform(img)
@@ -59,22 +100,36 @@ def upload():
     print("classification")
     variable = [names[res],percentage]
 
-    return jsonify(variable);
+    return jsonify(variable)
 
-# @app.route('/upload/<filename>')
-# def send_image(filename):
-#     return send_from_directory("images", filename)
+@app.route("/retrain/", methods=['GET','POST'])
+def retrain():
+    #img = request.form['img']
+    #convertImage(img)
+    choice = request.form['choice']
+    print("choice = ", choice)
+
+    # y_new = [int(choice)]
+    # modelname = "sgd.joblib"
+    # loaded_model = joblib.load(modelname)
+    # loaded_model.partial_fit(img, y_new)
+    # joblib.dump(loaded_model, 'sgd2.joblib')
+    # print("size fit =", os.path.getsize('sgd.joblib'))
+    # print("size fit =", os.path.getsize('sgd2.joblib'))
+    #
+    print("test retrain")
+    x = randint(1, 100)
+    dest = "hybrid2/"+ folders[int(choice)] +"/" +str(x) +".png"
+    print("dest = ", dest)
+    shutil.copy2('output.png', dest)  # target filename is /dst/dir/file.ext
+    ml.retrain()
+
+    return "success"
 
 def convertImage(imgData1):
     imgstr = re.search(b'base64,(.*)',imgData1).group(1)
     with open('output.png','wb') as output:
       output.write(base64.b64decode(imgstr))
-
-@app.route('/gallery')
-def get_gallery():
-    image_names = os.listdir('./images')
-    print(image_names)
-    return render_template("gallery.html", image_names=image_names)
 
 
 if __name__ == "__main__":
