@@ -1,6 +1,6 @@
 import os
 from uuid import uuid4
-from flask import Flask, render_template, request, send_from_directory, jsonify
+from flask import Flask, render_template, request, send_from_directory, jsonify, redirect, session, abort,url_for
 import cv2 as cv
 import numpy as np
 from sklearn.externals import joblib
@@ -8,6 +8,7 @@ import base64
 import re
 import json
 import model.load as ml
+import MySQLdb
 from shutil import copyfile
 from random import *
 import shutil
@@ -16,16 +17,50 @@ __author__ = 'sarahawwad'
 
 app = Flask(__name__)
 
+conn = MySQLdb.connect(host="localhost",user="root",password="",db="elbow")
+
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 print("test1")
 
 folders = ["fractures", "osteo", "r_elbow_dislocation"]
 names = ["fracture", "osteoarthritis", "dislocation"]
 
-@app.route("/")
-def index():
-    return render_template("upload.html")
 
+# @app.route("/")
+# def index():
+#     return render_template("login.html")
+
+@app.route('/')
+def login():
+    return render_template("login.html")
+
+@app.route('/check',methods=["GET","POST"])
+def check():
+    username = str(request.form["user"])
+    password = str(request.form["password"])
+    cursor = conn.cursor()
+    cursor1 = conn.cursor()
+    cursor.execute("SELECT username FROM user WHERE username ='"+username+"' AND password ='"+password+"'")
+    cursor1.execute("SELECT type_id_fk FROM user WHERE username ='"+username+"' AND password ='"+password+"'")
+    user = cursor.fetchone()
+    type = cursor1.fetchone()
+
+    # if len(user) is 1:
+    #     return render_template("home.html",data=type[0])
+    # else:
+    #     return "failed"
+
+    if len(user) is 1:
+        if type[0] == 2:
+            return render_template("upload.html")
+        else:
+            return render_template("doctor.html")
+    else:
+        return "failed"
+
+@app.route("/classify", methods=['GET','POST'])
+def classify():
+    return render_template("upload.html")
 
 @app.route("/upload/", methods=['GET','POST'])
 def upload():

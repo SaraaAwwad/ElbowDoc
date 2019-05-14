@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<link rel="stylesheet" type="text/css" href="static/style1.css">
+	<link rel="stylesheet" type="text/css" href="static/topnav.css">
+	<title>Elbowdoc</title>
+</head>
+
+<body>
+	<header>
+		<nav class="menu">
+			<ul>
+				<li class="logo"> <a href="" class="log"> Elbow<span class="org">doc</span> </a></li>
+			</ul>
+		</nav>
+    </header>
+	<main>
+
+
+	    <div id="signIn" style="padding: 120px 0px;">
+			<form class="modal-form" name="frmSI" id="formSi" method="post" action="/check">
+	   				<fieldset>
+
+	   					<!--<legend align="center">-->
+	   						<!--<img class="img-circle" alt="user" src="images/elbow.png"><br>-->
+	   					<!--</legend>-->
+
+	   					<div id="errorSi"></div>
+	     				<label><b>Username</b></label>
+	       				<input type="text" id="emIn" placeholder="Enter Username" name="user" required>
+
+	      				<label><b>Password</b></label>
+	      				<input type="password" placeholder="Enter Password" name="password" id="pwIn" required>
+
+	       				<button type="submit" class="signbtn" name="loginbtn">Log In</button>
+
+	      			</fieldset>
+	      	</form>
+	    </div>
+
+	</main>
+</body>
+</html>

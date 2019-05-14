@@ -1,0 +1,501 @@
+body {
+	padding-top: 0px;
+	margin: 0px;
+	border:0px;
+	font-family: 'Source Sans Pro', sans-serif;
+	overflow: auto;
+	-webkit-font-smoothing: antialiased;
+}
+
+/* for the sign up/in */
+
+.modal{
+	display: none;
+	position: fixed;
+	width:100%;
+	height:100%;
+	padding-top: 60px;
+	top:0;
+	left:0;
+	z-index: 1;
+	overflow: auto;
+	background-color:rgba(0,0,0,0.4);
+}
+
+
+.modal-form{
+	margin: 5px auto 15px auto;
+	background-color:white;
+	width:50%;
+	padding: 20px 20px 30px 20px;
+	border:1px solid black;
+	position:relative;
+	overflow: auto;
+    animation-name: animatetop;
+    animation-duration: 0.4s
+}
+
+
+@keyframes animatetop {
+    from {top:-300px; opacity:0}
+    to {top:0; opacity:1}
+}
+
+.close{
+	position: absolute;
+    right: 25px;
+    top: 0px;
+    color: #000;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.close:hover {
+    color: red;
+    cursor: pointer;
+}
+
+
+.modal-form input[type=text], .modal-form input[type=password]{
+ 	width: 100%;
+    padding: 15px 20px;
+    margin: 10px 0px 20px 0px;
+    display: block;
+    border-radius: 5px;
+    border: 1px solid grey;
+    box-sizing: border-box;
+}
+
+
+.signbtn{
+  display: block;
+  box-sizing: border-box;
+  margin: 0 auto;
+  padding: 8px;
+  width: 50%;
+  margin-bottom:5px;
+  margin-top:40px;
+  background: #8BD8BD;
+  border-radius: 8px;
+  color: #fff;
+  font-weight:bold;
+  text-align: center;
+  text-decoration: none;
+  letter-spacing: 1px;
+  transition: all 0.3s ease-out;
+}
+
+.signbtn:hover,
+.signbtn:focus,
+.signbtn:active{
+  background: #8BD8BD;
+  color: #243665;
+  transition: all 0.5s ease-in;
+}
+
+
+.is-blue {
+  background: #1e348e; /* fallback color for old browsers */
+  background: rgba(30, 52, 142, 0.5);
+}
+.is-blue:hover,
+.is-blue:focus,
+.is-blue:active {
+  background: #1e348e; /* fallback color for old browsers */
+  background: rgb(30, 52, 142);
+  color: #fff;
+}
+
+.img-circle {
+    border-radius: 50%;
+    width:120px;
+    height:120px;
+}
+
+ .homepage{
+	position:relative;
+	top:0;
+	width:100%;
+	height: 660px;
+	background-image: url('images/simps.jpg');
+	background-repeat: no-repeat;
+    background-position: center;
+	background-size: cover;
+}
+.ratings_vote {
+	position:relative;
+	display:inline-block;
+	width: 50px;
+	height: 50px;
+	background-image: url('images/0752.png');
+	opacity:0.2;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+.ratings_stars {
+	position:relative;
+	display:inline-block;
+	width: 50px;
+	height: 50px;
+	background-image: url('images/0752.png');
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+
+div .ratings_vote:hover {
+	opacity: 0.5;
+}
+
+
+.footerpage{
+	position:relative;
+	top:0;
+	width:100%;
+	height: 900px;
+	background-repeat: repeat-y;
+	background-image: url('../css/images/back.png');
+	background-repeat: no-repeat;
+    background-position: center;
+	background-size: cover;
+
+}
+
+/*CONTACT US*/
+.board2{
+
+	/*margin: auto;
+    width: 50%;
+    padding:50px;
+    background-color: white;
+    color: black;*/
+
+    background-color: white;
+    position: absolute;
+    border-radius: 7px;
+    top:20%;
+    bottom: 50%;
+    left: 10%;
+    width: 80%;
+    height: 80%;
+}
+.board2 b{
+	text-align: left;
+	font-size: 35px;
+	margin-left: 20px;
+
+}
+
+.board2 p{
+	text-align: left;
+	font-size: 23px;
+	margin-left: 20px;
+}
+
+.board2 h1{
+	text-align: left;
+	font-size: 30px;
+	margin-left: 20px;
+}
+
+.board2 a{
+	text-align: left;
+	font-size: 23px;
+	margin-left: 20px;
+	color: coral;
+	text-decoration: none;
+}
+
+/*THE ABOUT US PAGE*/
+.board{
+
+	/*margin: auto;
+    width: 50%;
+    padding:50px;
+    background-color: white;
+    color: black;*/
+
+    background-color: white;
+    position: absolute;
+    border-radius: 7px;
+    top:20%;
+    bottom: 50%;
+    left: 10%;
+    width: 80%;
+    height: 110%;
+}
+
+.board b{
+	text-align: left;
+	font-size: 40px;
+	margin-left: 20px;
+
+}
+
+.board p{
+	text-align: left;
+	font-size: 23px;
+	margin-left: 20px;
+}
+
+#stepsgif{
+	width: 800px;
+	height: 450px;
+}
+/*ABOUT US PAGE ENDS HERE*/
+
+/*THE MEET US PAGE*/
+.teamboard{
+	background-color: transparent;
+    position: absolute;
+    border-radius: 7px;
+    top:20%;
+    bottom: 50%;
+    left: 10%;
+    width: 80%;
+    height: 110%;
+    text-align: center;
+
+}
+
+.teamboard b{
+	font-size: 40px;
+	color: black;
+}
+
+.teamboard p{
+	font-size: 22px;
+	color: black;
+}
+
+.menna{
+	background-color: transparent;
+    position: absolute;
+    border-radius: 7px;
+    top:15%;
+    bottom: 50%;
+    left: 10%;
+    width: 200px;
+    height: 280px;
+    text-align: center;
+}
+
+
+.menna img{
+	width: 190px;
+	height: 240px;
+	border-radius: 120px;
+	align:center;
+	-webkit-filter: drop-shadow(5px 5px 5px #222);
+  filter: drop-shadow(5px 5px 5px #222);
+}
+
+.menna b{
+	position: absolute;
+	top:90%;
+	left: 10%;
+	color: black;
+	font-size: 20px;
+}
+
+.sara{
+	background-color: transparent;
+    position: absolute;
+    border-radius: 7px;
+    top:15%;
+    bottom: 50%;
+    left: 57%;
+    width: 200px;
+    height: 280px;
+    text-align: center;
+}
+
+
+.sara img{
+	width: 190px;
+	height: 240px;
+	border-radius: 120px;
+	align:center;
+	-webkit-filter: drop-shadow(5px 5px 5px #222);
+  filter: drop-shadow(5px 5px 5px #222);
+}
+
+.sara b{
+	position: absolute;
+	top:90%;
+	left: 26%;
+	color: black;
+	font-size: 20px;
+}
+
+.farrah{
+	background-color: transparent;
+    position: absolute;
+    border-radius: 7px;
+    top:55%;
+    bottom: 50%;
+    left: 34%;
+    width: 200px;
+    height: 280px;
+    text-align: center;
+}
+
+
+.farrah img{
+	width: 190px;
+	height: 240px;
+	border-radius: 120px;
+	align:center;
+	-webkit-filter: drop-shadow(5px 5px 5px #222);
+  filter: drop-shadow(5px 5px 5px #222);
+}
+
+.farrah b{
+	position: absolute;
+	top:90%;
+	left: 22%;
+	color: black;
+	font-size: 20px;
+}
+
+/*THE MEET US PAGE ENDS HERE*/
+
+.steps{
+	background-color: white;
+	width: 100%;
+	height:400px;
+	margin-top: -20px;
+}
+
+
+
+.smallcol{
+	float:left;
+	width:25%;
+	height:50%;
+}
+
+.cake{
+	margin:5%;
+	font-size: 50px;
+	text-align:center;
+}
+
+div.steps img{
+	width:80px;
+	height: 80px;
+	margin-left: 15%;
+}
+
+div.steps p{
+	font-size:25px;
+	padding:10px 30px 10px;
+	text-align: center;
+}
+
+footer {
+ padding-top: 50px;
+ width:100%;
+ height:160px;
+ background-color:#262626;
+
+}
+
+.footerCol{
+
+	float:left;
+	width:33%;
+	height:100%;
+	text-align: center;
+	color:white;
+
+}
+
+div.footerCol p{
+
+	line-height:50%;
+}
+
+div.footerCol a{
+	line-height:50%;
+	text-decoration: none;
+    font-size: 20px;
+    color: white;
+	font-family: sans-serif;
+	font-weight: bold;
+}
+
+#head{
+
+	font-size:20px;
+	line-height:200%;
+}
+
+/*el feeh bey2olo order in a few easy steps*/
+.instruct{
+font-family: 'Raleway', sans-serif;
+  border-radius: 5px;
+  padding: 40px;
+  background: transparent;
+  position: absolute;
+  right: 260px;
+  top: 230px;
+  font-size:40px;
+  height:320px;
+  color:white;
+  text-align: center;
+}
+
+@keyframes jump { 0% { top: 0; } 50% { top: 17px; } 100% { top: 0; } }
+
+#arrow-down {
+   position: absolute;
+   right: 29%;
+   margin-top:445px;
+   text-align: center;
+   animation: jump 2s infinite;
+}
+  i { content: '\f0a8';
+  color:white; }
+  i:hover { color: #FFAAAA; }
+
+
+a.bttn {
+  color: #FF0072;
+  text-decoration: none;
+}
+a.bttn:hover {
+  color: #FFF;
+  transition: 0.5s ease all;
+}
+.bttn {
+  font-size: 18px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  display: inline-block;
+  text-align: center;
+  width: 270px;
+  font-weight: bold;
+  position: absolute;
+  top: 440px;
+  right: 27%;
+  padding: 14px 0px;
+  border: 3px solid #FF0072;
+  border-radius: 2px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.bttn:hover {
+  transition: 1s all ease;
+  background-color: #FF0072;
+  opacity: 1;
+}
+
+.err{
+color: red;
+font-size: 40 px;
+}
+
+
+
